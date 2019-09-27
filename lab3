@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# Your Name
+# youremail@csu.fullerton.edu
+# CPSC 254-99
+#
+# A trivial example shell script to demonstrate good formatting and command
+# line processing as demonstrated in class.
+#
+
+function usage () {
+  echo "Usage:"
+  echo "  ${1} "
+  echo
+  echo "  This is a backup utility that will do the following..."
+  echo "  Please enter with an apporiate parameter: "
+  echo "  n) Prints out location of the backup, the name of the tar archive ."
+}
+
+#
+# Main
+#
+
+SCRIPTNAME=`basename ${0}`
+args=`getopt "nhc:vr:" $*`
+
+if [ $? -ne 0 ]; then
+       echo 'Usage: ...'
+       exit 2
+fi
+
+
+set -- $args
+
+while :; do
+  case "$1" in
+    -n ) # process dry run
+
+      oarg=$2
+      #tar -cvzf "$(date '+%Y-%m-%d').tar.gz" $1
+      shift
+      ;;
+
+      -h ) #help message
+        echo "Help message."
+        echo "n ) "
+        shift
+        ;;
+
+
+    -c ) # the number of backups to retain
+      echo "The number of backups to retain";
+      shift
+      ;;
+
+    -v ) # Make the script very verbose by printing out every step that it does and every file
+        #that is being backed up.
+      echo "Verbose Mode."
+      shift
+      ;;
+
+      -r ) # process option t
+        echo "Remote backup"
+        shift
+        ;;
+
+    --)
+    shift; break
+    ;;
+  esac
+done
+
+#dry run
+echo "Backing up: ${oarg}"
